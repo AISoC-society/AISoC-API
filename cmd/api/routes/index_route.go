@@ -3,7 +3,7 @@
  * cmd/api/routes/index_route.go
  *
  * Created by:	Aakash Sen Sharma, January 2023
- * Copyright:	(C) 2022, Aakash Sen Sharma & Contributors
+ * Copyright:	(C) 2023, Aakash Sen Sharma & Contributors
  */
 
 package routes
