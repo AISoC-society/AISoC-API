@@ -30,4 +30,4 @@ $ make
 1. Run `make check` to make sure all tests and linting checks pass.
 1. Follow standard golang practices to reduce heap allocations! This is done to ensure that the compiler can inline most of our code for good performance.
 1. Run `make allocs` to make sure no new allocations are made on the heap that are unecessary.
-1. All commit messages should adhere to (conventional commits.)[https://www.conventionalcommits.org/en/v1.0.0/]
+1. All commit messages should adhere to [conventional commits.](https://www.conventionalcommits.org/en/v1.0.0/)
