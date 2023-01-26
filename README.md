@@ -7,6 +7,10 @@
 1. `go` 1.18
 1. `make`
 
+## Runtime Dependencies:
+
+1. `sqlite`
+
 ### Steps:
 
 ```bash
