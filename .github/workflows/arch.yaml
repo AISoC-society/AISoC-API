@@ -6,13 +6,18 @@ jobs:
         name: "CI"
         runs-on: ubuntu-latest
         steps:
+            - name: Checkout source
+              uses: actions/checkout@v3
+              with:
+                  fetch-depth: 0
+
+            - name: Check conventional commit compliance
+              uses: cocogitto/cocogitto-action@v3
+
             - name: Get required pkgs
               run: |
                   sudo apt-get update
                   sudo apt-get install git golang make -y
-
-            - name: Checkout source
-              uses: actions/checkout@v3
 
             - name: Compile
               run: |
