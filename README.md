@@ -7,7 +7,7 @@
 1. `go` 1.18
 1. `make`
 
-## Runtime Dependencies:
+### Runtime Dependencies:
 
 1. `sqlite`
 
