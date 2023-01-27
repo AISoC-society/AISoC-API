@@ -18,18 +18,18 @@ import (
 )
 
 var (
-	once         sync.Once
-	db_singleton *gorm.DB
+	db_singleton          sync.Once
+	db_singleton_instance *gorm.DB
 )
 
 func GetDbHandle() *gorm.DB {
-	once.Do(func() {
+	db_singleton.Do(func() {
 		if db, err := gorm.Open(sqlite.Open(os.Getenv("DATABASE_PATH")), &gorm.Config{}); err != nil {
 			fmt.Printf("Failed to open database file: `%s`.\n%s\n", os.Getenv("DATABASE_PATH"), err.Error())
 			os.Exit(1)
 		} else {
-			db_singleton = db
+			db_singleton_instance = db
 		}
 	})
-	return db_singleton
+	return db_singleton_instance
 }
