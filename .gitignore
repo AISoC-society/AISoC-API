@@ -2,4 +2,4 @@
 /api
 go.sum
 release
-credits.db
+*.db
