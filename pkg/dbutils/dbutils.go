@@ -22,6 +22,7 @@ var (
 	db_singleton_instance *gorm.DB
 )
 
+//Read the `DATABASE_PATH` environment variable and return a database handle to it.
 func GetDbHandle() *gorm.DB {
 	db_singleton.Do(func() {
 		if db, err := gorm.Open(sqlite.Open(os.Getenv("DATABASE_PATH")), &gorm.Config{}); err != nil {
