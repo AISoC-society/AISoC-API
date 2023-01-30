@@ -25,7 +25,7 @@ $ make
 
 ## Contributing:
 
-1. Fork this repository
+1. Fork this repository.
 1. Make all your changes against the main branch in a patch branch.
 1. Run `make check` to make sure all tests and linting checks pass.
 1. Follow standard golang practices to reduce heap allocations! This is done to ensure that the compiler can inline most of our code for good performance.
