@@ -1,12 +1,12 @@
 /* SPDX-License-Identifier: BSD 2-Clause "Simplified" License
  *
- * pkg/dbutils/dbutils.go
+ * pkg/utils/dbutils.go
  *
  * Created by:	Aakash Sen Sharma, January 2023
  * Copyright:	(C) 2023, Aakash Sen Sharma & Contributors
  */
 
-package dbutils
+package utils
 
 import (
 	"fmt"
@@ -22,10 +22,9 @@ var (
 	db_singleton_instance *gorm.DB
 )
 
-//Read the `DATABASE_PATH` environment variable and return a database handle to it.
-func GetDbHandle() *gorm.DB {
+func GetDbHandle(api_state *ENV_VAR_STATE) *gorm.DB {
 	db_singleton.Do(func() {
-		if db, err := gorm.Open(sqlite.Open(os.Getenv("DATABASE_PATH")), &gorm.Config{}); err != nil {
+		if db, err := gorm.Open(sqlite.Open(api_state.DATABASE_PATH), &gorm.Config{}); err != nil {
 			fmt.Printf("Failed to open database file: `%s`.\n%s\n", os.Getenv("DATABASE_PATH"), err.Error())
 			os.Exit(1)
 		} else {
