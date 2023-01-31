@@ -9,36 +9,29 @@
 package main
 
 import (
-	"api/cmd/api/routes"
+	"api/cmd/api/router"
 	"api/pkg/utils"
+	"encoding/json"
 	"fmt"
 	"os"
 
 	"github.com/gofiber/fiber/v2"
-	"github.com/joho/godotenv"
 )
 
-var API_STATE utils.ENV_VAR_STATE
-
-func init() {
-	API_STATE.API_MODE = os.Getenv("API_MODE")
-	API_STATE.API_PORT = os.Getenv("API_PORT")
-	API_STATE.DATABASE_PATH = os.Getenv("DATABASE_PATH")
-	API_STATE.LOGGER = nil
-}
+var API_STATE utils.APP_STATE
 
 func main() {
-	// Loading environment variables.
-	if err := godotenv.Load(); err != nil {
-		fmt.Printf("Failed to read `.env` file.\n%s\n", err)
-		os.Exit(1)
-	}
-
 	// Since we prefork for performance boost, we need to keep master thread checks!
-	if !fiber.IsChild() {
+	utils.IsNotFiberChild(func() {
+		utils.LoadEnvVars(&API_STATE)
 		utils.InitializeLogger(&API_STATE)
+
+		API_STATE.LOGGER.Infoln("Loaded environment variables from `.env` file successfully!")
+		bytes, _ := json.Marshal(API_STATE)
+		API_STATE.LOGGER.Infoln(string(bytes))
+
 		utils.InitializeDbHandle(&API_STATE)
-	}
+	})
 
 	// Creating the API.
 	app := fiber.New(fiber.Config{
@@ -50,7 +43,8 @@ func main() {
 	})
 
 	// Registering all routes.
-	app.Get("/", routes.IndexRoute)
+	router.SetupRoutes(app)
+	utils.IsNotFiberChild(func() { API_STATE.LOGGER.Infoln("Successfully setup all API Routes!") })
 
 	// Run!
 	app.Listen(fmt.Sprintf("localhost:%s", os.Getenv("API_PORT")))

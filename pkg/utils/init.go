@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: BSD 2-Clause "Simplified" License
  *
- * pkg/utils/utils.go
+ * pkg/utils/init.go
  *
  * Created by:	Aakash Sen Sharma, January 2023
  * Copyright:	(C) 2023, Aakash Sen Sharma & Contributors
@@ -17,7 +17,8 @@ import (
 )
 
 //Initialize the uber-go-zap logger according to the `API_MODE` environment variable (production/debug).
-func InitializeLogger(api_state *ENV_VAR_STATE) {
+//This function sets the `LOGGER` field.
+func InitializeLogger(api_state *APP_STATE) {
 	var zap_logger *zap.Logger
 	var err error
 
@@ -38,8 +39,9 @@ func InitializeLogger(api_state *ENV_VAR_STATE) {
 	return
 }
 
-//Initialize the database handle in the api_state
-func InitializeDbHandle(api_state *ENV_VAR_STATE) {
+//Initialize the database handle in the api_state.
+//This function sets the `DATABASE_HANDLE` field.
+func InitializeDbHandle(api_state *APP_STATE) {
 	api_state.DATABASE_HANDLE = GetDbHandle(api_state)
 	api_state.LOGGER.Infof("Successfully established database handshake!")
 }

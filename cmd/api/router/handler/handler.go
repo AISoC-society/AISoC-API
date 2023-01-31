@@ -1,15 +1,15 @@
 /* SPDX-License-Identifier: BSD 2-Clause "Simplified" License
  *
- * cmd/api/routes/index_route.go
+ * cmd/api/router/handler/handler.go
  *
  * Created by:	Aakash Sen Sharma, January 2023
  * Copyright:	(C) 2023, Aakash Sen Sharma & Contributors
  */
 
-package routes
+package handler
 
 import "github.com/gofiber/fiber/v2"
 
-func IndexRoute(c *fiber.Ctx) error {
-	return c.JSON("Welcome to AISoC API.")
+func V1_root(ctx *fiber.Ctx) error {
+	return ctx.JSON("Welcome to the AISoC API V1!")
 }

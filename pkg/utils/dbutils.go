@@ -22,7 +22,7 @@ var (
 	db_singleton_instance *gorm.DB
 )
 
-func GetDbHandle(api_state *ENV_VAR_STATE) *gorm.DB {
+func GetDbHandle(api_state *APP_STATE) *gorm.DB {
 	db_singleton.Do(func() {
 		if db, err := gorm.Open(sqlite.Open(api_state.DATABASE_PATH), &gorm.Config{}); err != nil {
 			fmt.Printf("Failed to open database file: `%s`.\n%s\n", os.Getenv("DATABASE_PATH"), err.Error())
