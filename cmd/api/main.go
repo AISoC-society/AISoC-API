@@ -38,7 +38,6 @@ func main() {
 	if !fiber.IsChild() {
 		utils.InitializeLogger(&API_STATE)
 		utils.InitializeDbHandle(&API_STATE)
-		API_STATE.LOGGER.Infoln("Hello World")
 	}
 
 	// Creating the API.

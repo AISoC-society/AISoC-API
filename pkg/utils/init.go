@@ -34,10 +34,12 @@ func InitializeLogger(api_state *ENV_VAR_STATE) {
 
 	defer zap_logger.Sync()
 	api_state.LOGGER = zap_logger.Sugar()
+	api_state.LOGGER.Infoln("Successfully initialized zap-logger!")
 	return
 }
 
 //Initialize the database handle in the api_state
 func InitializeDbHandle(api_state *ENV_VAR_STATE) {
 	api_state.DATABASE_HANDLE = GetDbHandle(api_state)
+	api_state.LOGGER.Infof("Successfully established database handshake!")
 }
