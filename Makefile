@@ -30,6 +30,6 @@ release:
 clean:
 	go clean
 	$(RM) -rf ./release
-	find . -name "*.json" -type f|xargs rm -f
+	find . -name "*.db" -type f|xargs rm -f
 
 .PHONY: build release clean run check allocs
