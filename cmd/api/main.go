@@ -11,7 +11,6 @@ package main
 import (
 	"api/cmd/api/router"
 	"api/pkg/utils"
-	"encoding/json"
 	"fmt"
 	"os"
 
@@ -20,19 +19,17 @@ import (
 
 var API_STATE utils.APP_STATE
 
-func main() {
-	// Since we prefork for performance boost, we need to keep master thread checks!
+func init() {
 	utils.IsNotFiberChild(func() {
 		utils.LoadEnvVars(&API_STATE)
 		utils.InitializeLogger(&API_STATE)
-
-		API_STATE.LOGGER.Infoln("Loaded environment variables from `.env` file successfully!")
-		bytes, _ := json.Marshal(API_STATE)
-		API_STATE.LOGGER.Infoln(string(bytes))
+		API_STATE.LOGGER.Info("Loaded environment variables from `.env` file successfully: ", API_STATE)
 
 		utils.InitializeDbHandle(&API_STATE)
 	})
+}
 
+func main() {
 	// Creating the API.
 	app := fiber.New(fiber.Config{
 		Prefork:       true,
@@ -43,8 +40,7 @@ func main() {
 	})
 
 	// Registering all routes.
-	router.SetupRoutes(app)
-	utils.IsNotFiberChild(func() { API_STATE.LOGGER.Infoln("Successfully setup all API Routes!") })
+	router.SetupRoutes(app, &API_STATE)
 
 	// Run!
 	app.Listen(fmt.Sprintf("localhost:%s", os.Getenv("API_PORT")))
