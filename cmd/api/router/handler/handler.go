@@ -10,6 +10,10 @@ package handler
 
 import "github.com/gofiber/fiber/v2"
 
-func V1_root(ctx *fiber.Ctx) error {
+func V1Root(ctx *fiber.Ctx) error {
 	return ctx.JSON("Welcome to the AISoC API V1!")
+}
+
+func AuthLogin(ctx *fiber.Ctx) error {
+	return ctx.JSON("Logged in!")
 }

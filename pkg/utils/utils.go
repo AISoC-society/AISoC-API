@@ -24,8 +24,14 @@ func IsNotFiberChild(f func()) {
 	}
 }
 
-//Load the .env file relative to the final executable!
-func LoadEnvVars(api_state *APP_STATE) {
+//Print log information and call os.Exit with an exit code of 1.
+func (api_state *APP_STATE) panic(template string, args ...interface{}) {
+	api_state.LOGGER.Errorf(template, args)
+	os.Exit(1)
+}
+
+//Load the `.env` file relative to the final executable!
+func (api_state *APP_STATE) LoadEnvVars() {
 	if err := godotenv.Load(); err != nil {
 		fmt.Printf("Failed to read `.env` file.\n%s\n", err)
 		os.Exit(1)

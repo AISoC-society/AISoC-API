@@ -9,6 +9,8 @@
 package utils
 
 import (
+	"time"
+
 	"go.uber.org/zap"
 	"gorm.io/gorm"
 )
@@ -19,4 +21,20 @@ type APP_STATE struct {
 	DATABASE_PATH   string
 	LOGGER          *zap.SugaredLogger
 	DATABASE_HANDLE *gorm.DB
+}
+
+//Schema models.
+type Event struct {
+	ID        uint      `gorm:"primaryKey;autoIncrement:1"`
+	CreatedAt time.Time `gorm:"autoCreateTime"`
+	name      string
+}
+
+type Member struct {
+	ID              uint `gorm:"primaryKey;autoIncrement:1"`
+	Email           string
+	CreatedAt       time.Time `gorm:"autoCreateTime"`
+	UpdatedAt       time.Time `gorm:"autoUpdateTime:milli"`
+	EventsAttended  []Event   `gorm:"foreignkey:ID"`
+	AttendanceCount int
 }

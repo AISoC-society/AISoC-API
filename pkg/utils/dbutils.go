@@ -9,7 +9,6 @@
 package utils
 
 import (
-	"fmt"
 	"os"
 	"sync"
 
@@ -25,8 +24,7 @@ var (
 func GetDbHandle(api_state *APP_STATE) *gorm.DB {
 	db_singleton.Do(func() {
 		if db, err := gorm.Open(sqlite.Open(api_state.DATABASE_PATH), &gorm.Config{}); err != nil {
-			fmt.Printf("Failed to open database file: `%s`.\n%s\n", os.Getenv("DATABASE_PATH"), err.Error())
-			os.Exit(1)
+			api_state.panic("Failed to open database file: `%s`.\n%s\n", os.Getenv("DATABASE_PATH"), err.Error())
 		} else {
 			db_singleton_instance = db
 		}

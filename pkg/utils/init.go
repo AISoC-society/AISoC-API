@@ -16,9 +16,8 @@ import (
 	"go.uber.org/zap"
 )
 
-//Initialize the uber-go-zap logger according to the `API_MODE` environment variable (production/debug).
-//This function sets the `LOGGER` field.
-func InitializeLogger(api_state *APP_STATE) {
+//Initialize the global logger.
+func (api_state *APP_STATE) InitializeLogger() {
 	var zap_logger *zap.Logger
 	var err error
 
@@ -35,13 +34,17 @@ func InitializeLogger(api_state *APP_STATE) {
 
 	defer zap_logger.Sync()
 	api_state.LOGGER = zap_logger.Sugar()
-	api_state.LOGGER.Infoln("Successfully initialized zap-logger!")
+	api_state.LOGGER.Debug("Successfully initialized zap-logger!")
 	return
 }
 
-//Initialize the database handle in the api_state.
-//This function sets the `DATABASE_HANDLE` field.
-func InitializeDbHandle(api_state *APP_STATE) {
+//Initialize the global database handle.
+func (api_state *APP_STATE) InitializeDbHandle() {
 	api_state.DATABASE_HANDLE = GetDbHandle(api_state)
-	api_state.LOGGER.Infof("Successfully established database handshake!")
+	api_state.LOGGER.Debug("Successfully established database handshake!")
+
+	if err := api_state.DATABASE_HANDLE.AutoMigrate(&Member{}, &Event{}); err != nil {
+		api_state.panic("Schema auto migration failed!")
+	}
+	api_state.LOGGER.Debug("Successfully completed schema migration!")
 }

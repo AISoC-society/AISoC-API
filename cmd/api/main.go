@@ -12,7 +12,6 @@ import (
 	"api/cmd/api/router"
 	"api/pkg/utils"
 	"fmt"
-	"os"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -21,11 +20,11 @@ var API_STATE utils.APP_STATE
 
 func init() {
 	utils.IsNotFiberChild(func() {
-		utils.LoadEnvVars(&API_STATE)
-		utils.InitializeLogger(&API_STATE)
-		API_STATE.LOGGER.Info("Loaded environment variables from `.env` file successfully: ", API_STATE)
+		API_STATE.LoadEnvVars()
+		API_STATE.InitializeLogger()
+		API_STATE.LOGGER.Debug("Loaded environment variables from `.env` file successfully: ", &API_STATE)
 
-		utils.InitializeDbHandle(&API_STATE)
+		API_STATE.InitializeDbHandle()
 	})
 }
 
@@ -42,6 +41,10 @@ func main() {
 	// Registering all routes.
 	router.SetupRoutes(app, &API_STATE)
 
+	utils.IsNotFiberChild(func() {
+		API_STATE.LOGGER.Infof("Running the API!")
+	})
+
 	// Run!
-	app.Listen(fmt.Sprintf("localhost:%s", os.Getenv("API_PORT")))
+	app.Listen(fmt.Sprintf(":%s", API_STATE.API_PORT))
 }
