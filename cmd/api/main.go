@@ -9,10 +9,10 @@
 package main
 
 import (
-	"api/cmd/api/router"
-	"api/pkg/utils"
 	"fmt"
 
+	"github.com/aisoc-society/aisoc-api/cmd/api/router"
+	"github.com/aisoc-society/aisoc-api/pkg/utils"
 	"github.com/gofiber/fiber/v2"
 )
 

@@ -9,9 +9,8 @@
 package router
 
 import (
-	"api/cmd/api/router/handler"
-	"api/pkg/utils"
-
+	"github.com/aisoc-society/aisoc-api/cmd/api/router/handler"
+	"github.com/aisoc-society/aisoc-api/pkg/utils"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/logger"
 )

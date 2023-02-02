@@ -1,4 +1,4 @@
-module api
+module github.com/aisoc-society/aisoc-api
 
 go 1.18
 
