@@ -30,6 +30,7 @@ release:
 clean:
 	go clean
 	$(RM) -rf ./release
+	$(RM) -f $(BINARY)
 	find . -name "*.db" -type f|xargs rm -f
 
 .PHONY: build release clean run check allocs

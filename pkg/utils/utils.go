@@ -11,6 +11,9 @@ package utils
 import (
 	"fmt"
 	"os"
+	"strconv"
+	"strings"
+	"time"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/joho/godotenv"
@@ -37,7 +40,20 @@ func (api_state *APP_STATE) LoadEnvVars() {
 		os.Exit(1)
 	}
 
-	api_state.API_MODE = os.Getenv("API_MODE")
+	api_state.API_MODE = strings.ToLower(os.Getenv("API_MODE"))
 	api_state.API_PORT = os.Getenv("API_PORT")
 	api_state.DATABASE_PATH = os.Getenv("DATABASE_PATH")
+
+	if max_conns, err := strconv.Atoi(os.Getenv("MAX_CONCURRENT_CONNECTIONS")); err != nil {
+		fmt.Printf("Failed to parse `MAX_CONCURRENT_CONNECTIONS` environment variable.\n")
+		os.Exit(1)
+	} else {
+		api_state.MAX_CONCURRENT_CONNECTIONS = max_conns
+	}
+
+	if duration, err := time.ParseDuration(os.Getenv("EXPIRATION_TIME")); err != nil {
+		fmt.Printf("Failed to parse `EXPIRATION_TIME`: %s\n", err.Error())
+	} else {
+		api_state.EXPIRATION_TIME = duration
+	}
 }

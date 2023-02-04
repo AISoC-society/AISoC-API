@@ -16,25 +16,11 @@ import (
 )
 
 type APP_STATE struct {
-	API_MODE        string
-	API_PORT        string
-	DATABASE_PATH   string
-	LOGGER          *zap.SugaredLogger
-	DATABASE_HANDLE *gorm.DB
-}
-
-//Schema models.
-type Event struct {
-	ID        uint      `gorm:"primaryKey;autoIncrement:1"`
-	CreatedAt time.Time `gorm:"autoCreateTime"`
-	name      string
-}
-
-type Member struct {
-	ID              uint `gorm:"primaryKey;autoIncrement:1"`
-	Email           string
-	CreatedAt       time.Time `gorm:"autoCreateTime"`
-	UpdatedAt       time.Time `gorm:"autoUpdateTime:milli"`
-	EventsAttended  []Event   `gorm:"foreignkey:ID"`
-	AttendanceCount int
+	API_MODE                   string
+	API_PORT                   string
+	DATABASE_PATH              string
+	MAX_CONCURRENT_CONNECTIONS int
+	EXPIRATION_TIME            time.Duration
+	LOGGER                     *zap.SugaredLogger
+	DATABASE_HANDLE            *gorm.DB
 }

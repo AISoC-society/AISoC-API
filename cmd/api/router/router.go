@@ -9,25 +9,33 @@
 package router
 
 import (
-	"github.com/aisoc-society/aisoc-api/cmd/api/router/handler"
 	"github.com/aisoc-society/aisoc-api/pkg/utils"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/logger"
+	"github.com/gofiber/fiber/v2/middleware/monitor"
 )
 
 func SetupRoutes(app *fiber.App, api_state *utils.APP_STATE) {
+	//Live resources monitor.
+	if api_state.API_MODE == "debug" {
+		app.Get("/monitor", monitor.New(monitor.Config{Title: "AISoC API Live Monitor"}))
+	}
+
 	// General API endpoints.
 	api := app.Group("/api", logger.New())
 
 	// Authentication endpoints.
-	auth := api.Group("/auth")
-	auth.Post("/login", handler.AuthLogin)
+	{
+		auth := api.Group("/auth")
+		auth.Get("/login", api_state.AuthLogin)
+	}
 
 	// Version 1 endpoints.
-	// NOTE: Over further releases we can retire old versions and bump them
-	// semantically here to maintain backwards compatibility.
-	v1 := api.Group("/v1")
-	v1.Get("/", handler.V1Root)
+	{
+		v1 := api.Group("/v1")
+		v1.Get("/", api_state.V1Root)
+		v1.Put("/adduser", api_state.AddUser)
+	}
 
 	utils.IsNotFiberChild(func() {
 		api_state.LOGGER.Infoln("Successfully setup all API route handlers!")
