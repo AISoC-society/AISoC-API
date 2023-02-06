@@ -13,6 +13,7 @@ import (
 	"os"
 	"strings"
 
+	"github.com/aisoc-society/aisoc-api/pkg/models"
 	"go.uber.org/zap"
 )
 
@@ -21,7 +22,7 @@ func (api_state *APP_STATE) InitializeLogger() {
 	var zap_logger *zap.Logger
 	var err error
 
-	if strings.Compare(strings.ToLower(api_state.API_MODE), "production") == 0 {
+	if strings.Compare(api_state.API_MODE, "production") == 0 {
 		zap_logger, err = zap.NewProduction()
 	} else {
 		zap_logger, err = zap.NewDevelopment()
@@ -43,7 +44,7 @@ func (api_state *APP_STATE) InitializeDbHandle() {
 	api_state.DATABASE_HANDLE = GetDbHandle(api_state)
 	api_state.LOGGER.Debug("Successfully established database handshake!")
 
-	if err := api_state.DATABASE_HANDLE.AutoMigrate(&Member{}, &Event{}); err != nil {
+	if err := api_state.DATABASE_HANDLE.AutoMigrate(&models.Member{}, &models.Event{}); err != nil {
 		api_state.panic("Schema auto migration failed!")
 	}
 	api_state.LOGGER.Debug("Successfully completed schema migration!")
